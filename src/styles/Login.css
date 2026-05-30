@@ -15,7 +15,7 @@
     width: 100%;
     max-width: 440px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
-                inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     gap: 28px;
@@ -27,6 +27,7 @@
         opacity: 0;
         transform: scale(0.96) translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -101,7 +102,7 @@
     border-color: var(--primary);
     background: rgba(15, 21, 39, 0.8);
     box-shadow: 0 0 0 4px var(--primary-glow),
-                0 0 12px rgba(139, 92, 246, 0.1);
+        0 0 12px rgba(139, 92, 246, 0.1);
 }
 
 /* Focused group label color change */
@@ -155,4 +156,18 @@
 .auth-redirect a:hover {
     color: var(--secondary-hover);
     text-decoration: underline;
+}
+
+
+/* जब बटन डिसेबल हो, तब उसका लुक ऐसा होना चाहिए */
+.submit-btn:disabled {
+    background: #4b5563 !important;
+    /* ग्रे (Gray) कलर */
+    color: #9ca3af !important;
+    cursor: not-allowed;
+    /* माउस ले जाने पर ब्लॉक का साइन दिखेगा */
+    transform: none !important;
+    /* बटन ऊपर नहीं उठेगा */
+    box-shadow: none !important;
+    /* ग्लो इफ़ेक्ट बंद */
 }

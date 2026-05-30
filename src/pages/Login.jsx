@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useActionState, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Login.css';
+import SubmitButton from '..//Component/SubmitButton'
+import { useFormMessage } from '../hooks/useFormMessage';
 
 export default function Login() {
     // Input fields ke liye state
+
     const [formData, setFormData] = useState({
         username: '',
-        age: '',
-        password: ''
+        password: '',
     });
 
     // Input change handle karne ke liye
@@ -17,21 +19,59 @@ export default function Login() {
     };
 
     // Form submit handle karne ke liye
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form Submitted:", formData);
-        alert(`Welcome back, ${formData.username}!`);
+    const handleSubmit = async (PrevState, formData) => {
+        await new Promise((resolve) => { setTimeout(resolve, 2000) })
+        try {
+
+            const { username, password } = Object.fromEntries(formData)
+            const sendToData = new FormData();
+            const url = "http://localhost:8080/api/login"
+            sendToData.append("username", username)
+            sendToData.append("password", password)
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: sendToData,
+            })
+            const responseText = await response.text()
+            let resData = {};
+            try {
+                resData = JSON.parse(responseText);
+            } catch (e) {
+                resData = { message: responseText }
+            }
+
+            // const resData = await response.json();
+            if (response.ok) {
+                // 1. यह टेक्स्ट बॉक्स (Username, Email, Password) को खाली करेगा
+                setFormData({
+                    username: '',
+                    password: '',
+                });
+
+                return { success: true, message: resData.message || "login successfully :-" };
+            } else {
+                return { success: false, message: resData.message || "Login failed!" };
+            }
+
+        } catch (error) {
+            console.log("error form ")
+        }
+
     };
 
+    const [data, actionform, pending] = useActionState(handleSubmit, undefined);
+    const getmessage = useFormMessage(data)
     return (
         <div className="page-container auth-container">
             <div className="auth-card">
+                {getmessage && data && <p style={{ textAlign: "center", color: "green" }}>{data.message}</p>}
                 <div className="auth-header">
                     <h2 className="auth-title">Welcome Back</h2>
                     <p className="auth-subtitle">Sign in to your account to continue</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="auth-form">
+                <form action={actionform} className="auth-form">
                     <div className="form-group">
                         <label className="form-label" htmlFor="username">Username</label>
                         <input
@@ -46,19 +86,6 @@ export default function Login() {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="age">Age</label>
-                        <input
-                            id="age"
-                            type="number"
-                            name="age"
-                            placeholder="Enter your age"
-                            value={formData.age}
-                            onChange={handleChange}
-                            className="form-input"
-                            required
-                        />
-                    </div>
 
                     <div className="form-group">
                         <label className="form-label" htmlFor="password">Password</label>
@@ -73,14 +100,11 @@ export default function Login() {
                             required
                         />
                     </div>
-
-                    <button type="submit" className="submit-btn">
-                        Sign In
-                    </button>
+                    <SubmitButton pending={pending} button="Login" />
                 </form>
 
                 <p className="auth-redirect">
-                    Don't have an account? 
+                    Don't have an account?
                     <Link to="/signup">Sign up</Link>
                 </p>
             </div>

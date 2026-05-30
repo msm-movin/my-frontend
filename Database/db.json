@@ -1,14 +1,11 @@
 {
-    "students": [
-        {
-            "id": 1,
-            "name": "Salman Ansari",
-            "course": "React"
-        },
-        {
-            "id": 2,
-            "name": "Aman Verma",
-            "course": "JavaScript"
-        }
-    ]
+  "users": [
+    {
+      "username": "mohd",
+      "email": "abc@gmail.com",
+      "password": "1111",
+      "id": "I3bj6KmcNss"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
