@@ -26,7 +26,7 @@ export default function Signup() {
             dataToSend.append("password", password);
 
 
-            const url = "http://localhost:8080/api/signup";
+            const url = `${BASE_URL}/api/signup`;
             const response = await fetch(url, {
                 method: "POST",
                 // headers: { "Content-Type": "application/json", },

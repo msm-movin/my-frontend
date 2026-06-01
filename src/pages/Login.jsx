@@ -6,7 +6,7 @@ import { useFormMessage } from '../hooks/useFormMessage';
 
 export default function Login() {
     // Input fields ke liye state
-
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -25,7 +25,7 @@ export default function Login() {
 
             const { username, password } = Object.fromEntries(formData)
             const sendToData = new FormData();
-            const url = "http://localhost:8080/api/login"
+            const url = `${BASE_URL}/api/login`
             sendToData.append("username", username)
             sendToData.append("password", password)
 
